@@ -7,7 +7,7 @@
   (synopsis "TODO Tracker")
   (description "Sutter's Lispy TODO Tracker")
   (home-page
-    "https://www.github.com/bms-1984/guile-todo")
+    "https://www.github.com/bms-1984/todo")
   (license gpl3+)
   (dependencies `())
   (skip ())
