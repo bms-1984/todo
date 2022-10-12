@@ -1,5 +1,5 @@
 ;; Copyright 2022 Ben M. Sutter
-;;#lib.scm was last modified on October 05, 2022 at 03:53 PM EDT by bms#
+;;#lib.scm was last modified on October 12, 2022 at 05:17 PM EDT by bms#
 
 ;; This file is part of Todo.
 
@@ -21,10 +21,10 @@
   #:export (*home*)
   #:export (*config*))
 
-(define *home* (getenv "HOME"))
-(define *config* (string-append (getenv-or-string "XDG_CONFIG_HOME" (string-append *home* "/.config/")) "todo/"))
-(define *store* (string-append *config* "store/"))
-
 (define (getenv-or-string var str)
   (let ((env (getenv var)))
     (if env env str)))
+
+(define *home* (getenv "HOME"))
+(define *config* (string-append (getenv-or-string "XDG_CONFIG_HOME" (string-append *home* "/.config")) "/todo/"))
+(define *store* (string-append *config* "store/"))
