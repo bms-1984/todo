@@ -1,0 +1,60 @@
+#!@GUILE@ -s
+!#
+;; coding: utf-8
+;; Copyright 2022 Ben M. Sutter
+;;#todo.in was last modified on October 05, 2022 at 09:25 PM EDT by bms#
+
+;; This file is part of Todo.
+
+;; Todo is free software: you can redistribute it and/or modify
+;; it under the terms of the GNU General Public License as published by
+;; the Free Software Foundation, either version 3 of the License, or
+;; (at your option) any later version.
+
+;; Todo is distributed in the hope that it will be useful,
+;; but WITHOUT ANY WARRANTY; without even the implied warranty of
+;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+;; GNU General Public License for more details.
+
+;; You should have received a copy of the GNU General Public License
+;; along with Todo.  If not, see <https://www.gnu.org/licenses/>.
+
+(use-modules (todo)
+	     (todo lib)
+	     (config)
+	     (config api)
+	     (config parser sexp)
+	     (config licenses))
+
+(define config
+  (configuration
+   (name 'todo)
+   (synopsis "Lispy Todo Tracker Configuration")
+   (license gpl3+)
+   (copyright '(2022))
+   (author "Ben M. Sutter")
+   (version "@VERSION@")
+   (generate-cmdtree? #t) ;; disable this for release
+   (keywords
+    (list
+     (setting
+      (name 'store) (synopsis "TODO Store Folder")
+      (default *store*))))
+   (directory (path (given *config*) (eager? #t)))
+   (parser sexp-parser)))
+
+(define (main cmd-line)
+  (let* ((options (getopt-config-auto cmd-line config))
+	 (store (option-ref options 'store)))
+    (unless (file-exists? store)
+      (mkdir store))
+    (unless (file-is-directory? store)
+      (delete-file store)
+      (mkdir store))
+    (emit-help options)))
+
+(main (command-line))
+
+;; # Local Variables:
+;; # mode: scheme
+;; # End:
